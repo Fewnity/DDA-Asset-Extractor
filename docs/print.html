@@ -198,10 +198,10 @@ Every packets in the list are drawn with the same texture. The texture index ref
 </code></pre>
 <h4 id="mesh-data"><a class="header" href="#mesh-data">Mesh data</a></h4>
 <p>A mesh is composed of many vif packets. A vif packet can draw only few triangles.</p>
-<p>Every vif packet list starts with something like that:</p>
+<p>Every vif packet list starts with a header that like that:</p>
 <pre><code>BA 01 00 60 00 00 00 00 00 00 00 00 00 00 00 14
 </code></pre>
-<p>The first two bytes are the size in byte of the list. The last byte is unknown.</p>
+<p>The first two bytes times 16 are the size in byte of the list (without the header). The last byte is unknown.</p>
 <p>A vif packet looks like this:</p>
 <p><img src="images/vif_packet_hex.png" alt="image" /></p>
 <ul>
@@ -253,12 +253,39 @@ The width in pixel [0x4, 0x7] and the height in pixel [0x8, 0x11].</p>
 <li>8 last colors are correct</li>
 </ul>
 <p>Once palette data is fixed, the palette can be used to create the final texture.</p>
+<h3 id="skybox-texture-table"><a class="header" href="#skybox-texture-table">Skybox texture table</a></h3>
 <h4 id="texture-table"><a class="header" href="#texture-table">Texture table</a></h4>
+<p>At the texture table address you will have the table header, something like that:</p>
+<pre><code class="language-c++">01 01 00 05 40 75 00 00 90 84 01 00 47 6C 61 64
+20 00 00 00 B8 11 00 00 E0 11 00 00 CC 03 00 00
+</code></pre>
+<p>The <code>20 00 00 00</code> value from [0x10, 0x13] is the texture table position offset starting from 0x10.
+The <code>B8 11 00 00</code> value from [0x14, 0x17] is the texture table size in bytes.</p>
+<p>Each entry has all the necessary information to extract the texture. There are some unknown values but looks like they are not useful for us.</p>
+<pre><code class="language-c++">struct TextureTableEntry
+{
+	uint32_t mipmapCount;          // Mipmap count, but weird value if it's an animated texture
+	ClutType clutType;             // Palette type : 19 = 256 colors, 20 = 16 colors
+	uint32_t width;                // Texture width in pixel with the mipmap included
+	uint32_t height;               // Texture height in pixel with the mipmap included
+	uint32_t unknown0;             // Unknown, not an unique value, id in the next table?
+	uint32_t unknown1;             // Always 1
+	uint32_t texturePosition;      // Always add 0x80 (file header size) to get real position in the file // Absolute for Cars and Maps, relative for SPRITE.UBR
+	uint32_t unknown2;             // Always 0
+	uint32_t unknown3;             // Unknown, not const (seen values: 16, 32) 32 only seen in winbowl
+	uint32_t unknown4;             // ??? = 16 * clutCount, not true if unknown3 is not egals to 16
+	uint32_t unknown5;             // Always 0
+	uint32_t clutCount;            // Palettes count
+	uint32_t palettePosition;      // Always add 0x80 (file header size) to get real position in the file // Absolute for Cars and Maps, relative for SPRITE.UBR
+	uint32_t textureInfosPosition; // Always add 0x80 (file header size) to get real position in the file and + 0xF to get the file name // Absolute for Cars and Maps, relative for SPRITE.UBR
+	// There is the width, height (without the mipmap) and the texture name in the texture infos
+};
+</code></pre>
 <h3 id="maps-header"><a class="header" href="#maps-header">Maps header</a></h3>
 <div class="table-wrapper"><table><thead><tr><th>FROM</th><th>TO</th><th>SIZE</th><th>TYPE</th><th>DESCRIPTION</th></tr></thead><tbody>
 <tr><td>0x00</td><td>0x03</td><td>4</td><td>UINT32_T</td><td>File type</td></tr>
 <tr><td>0x04</td><td>0x07</td><td>4</td><td>UINT32_T</td><td>Ptr to sky data?</td></tr>
-<tr><td>0x08</td><td>0x09</td><td>4</td><td>UINT32_T</td><td>Ptr to textures tables</td></tr>
+<tr><td>0x08</td><td>0x09</td><td>4</td><td>UINT32_T</td><td>Ptr to texture table headers</td></tr>
 <tr><td>0x0C</td><td>0x0F</td><td>4</td><td>STRING</td><td>File name</td></tr>
 </tbody></table>
 </div>
