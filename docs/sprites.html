@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Presentation - Destruction Derby Arenas PS2 Asset Extraction</title>
+        <title>Sprites UBR file - Destruction Derby Arenas PS2 Asset Extraction</title>
 
 
         <!-- Custom HTML head -->
@@ -166,28 +166,64 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="presentation"><a class="header" href="#presentation">Presentation</a></h1>
-<p>I'm currently working on a tool (code not published yet since I'm cleaning it before) to extract data from the Destruction Derby Arenas PS2 game made by Studio 33 in 2004.</p>
-<p>I'm documenting my researches if other people are interested by data extraction.</p>
-<p>Currently I'm able to extract every textures of the game and save them as PNG files and I can extract maps meshes and save them as FBX files (not perfect, still work in progress).
-I'm not able to extract power ups meshes.</p>
-<p><a href="https://github.com/Fewnity/DDA-Asset-Extractor">GitHub of the project</a></p>
-<p>Pictures of some extracted maps:</p>
-<p><img src="images/GLADIATO.PNG" alt="image" />
-<img src="images/JUSTICE.PNG" alt="image" />
-<img src="images/VEGAS.PNG" alt="image" /></p>
-<h2 id="contact"><a class="header" href="#contact">Contact:</a></h2>
-<p>If you want to talk about this project, you can reach me with:</p>
-<p><strong>Discord:</strong> fewnity</p>
-<p><strong>Email:</strong> fewnity@gmail.com</p>
-<p><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/gregory-machefer-grimaud/">https://www.linkedin.com/in/gregory-machefer-grimaud/</a></p>
+                        <h1 id="sprites-ubr-file"><a class="header" href="#sprites-ubr-file">Sprites UBR file</a></h1>
+<p>This file contains only textures.</p>
+<p>It's containing player skins, particules and some UI.</p>
+<p>Example of extracted textures:</p>
+<p><img src="images/SPRITES_images.png" alt="image" /></p>
+<h2 id="data-block-header"><a class="header" href="#data-block-header">Data block header</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>FROM</th><th>TO</th><th>SIZE</th><th>TYPE</th><th>DESCRIPTION</th></tr></thead><tbody>
+<tr><td>0x00</td><td>0x03</td><td>4</td><td>UINT32_T</td><td>File type</td></tr>
+<tr><td>0x04</td><td>0x07</td><td>4</td><td>UINT32_T</td><td>Next texture entry header address</td></tr>
+<tr><td>0x08</td><td>0x09</td><td>4</td><td>UINT32_T</td><td>Size of SPRITES.UBR in bytes</td></tr>
+<tr><td>0x0C</td><td>0x0F</td><td>4</td><td>NONE</td><td>Empty</td></tr>
+</tbody></table>
+</div>
+<h2 id="data"><a class="header" href="#data">Data</a></h2>
+<p>This file does not contain a texture table with every entries following each other. It's one one data block header, then one texture table entry, then one texture header, then the actual texture data and then it's starts again with a texture table entry.</p>
+<p>Here is how a texture entry looks like in a file:<br>
+(Red part is unknown and black part is not part of the struct).</p>
+<p><img src="images/texture_table_entry_hex.png" alt="image" /></p>
+<pre><code class="language-c++">struct TextureTableEntry
+{
+	uint32_t mipmapCount;          // Mipmap count, but weird value if it's an animated texture
+	ClutType clutType;             // Palette type : 19 = 256 colors, 20 = 16 colors
+	uint32_t width;                // Texture width in pixel with the mipmap included
+	uint32_t height;               // Texture height in pixel with the mipmap included
+	uint32_t unknown0;             // Unknown, not an unique value, id in the next table?
+	uint32_t unknown1;             // Always 1
+	uint32_t texturePosition;      // Generally it's a relative position in the file
+	uint32_t unknown2;             // Always 0
+	uint32_t unknown3;             // Unknown, not const (seen values: 16, 32) 32 only seen in winbowl
+	uint32_t unknown4;             // ??? = 16 * clutCount, not true if unknown3 is not egals to 16
+	uint32_t unknown5;             // Always 0
+	uint32_t clutCount;            // Palettes count
+	uint32_t palettePosition;      // Generally it's a relative position in the file
+	uint32_t textureInfosPosition; // Generally it's a relative position in the file + 0xF to get the file name
+	// There is the width, height (without the mipmap) and the texture name in the texture infos
+};
+</code></pre>
+<p>Here is how a texture hader looks like in a file:<br></p>
+<p><img src="images/texture_header_hex.png" alt="image" /></p>
+<pre><code class="language-c++">struct TextureHeader
+{
+	uint32_t unkown0;
+	uint32_t width; // Texture width in pixel without the mipmap
+	uint32_t height; // Texture height in pixel without the mipmap
+	uint32_t unkown1;
+	char filePath[0x80]; // Texture file path, not always present
+};
+</code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="cars.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
 
-                            <a rel="next prefetch" href="files_structure.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="in_game.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -197,8 +233,11 @@ I'm not able to extract power ups meshes.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="cars.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
 
-                    <a rel="next prefetch" href="files_structure.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="in_game.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

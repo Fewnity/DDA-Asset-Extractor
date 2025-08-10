@@ -1,13 +1,49 @@
-# Maps
+# Tracks
 
 Files located in the TRACKS folder.
 
-### Data order
+They contain maps textures, meshes, collisions data, probably navigation meshes and culling informations.
+
+Currently the tool can extract textures and meshes.
+
+Example of extracted textures:
+
+![image](images/MAPS_images.png)
+
+## Data
 
 In a map file, the data order will always be the same:<br>
-Mesh table -> mesh data -> textures -> texture table.
 
-#### Mesh table
+| File header |
+|-|
+Mesh table
+mesh data
+Textures
+Texture table
+
+### File header
+
+| FROM | TO | SIZE | TYPE | DESCRIPTION |
+|-|-|-|-|-|
+0x00 | 0x03 | 4 | UINT32_T | File type
+0x04 | 0x07 | 4 | UINT32_T | Ptr to skybox meshes and textures data
+0x08 | 0x09 | 4 | UINT32_T | Ptr to texture table headers
+0x0C | 0x0F | 4 | STRING | File name
+
+File type
+
+| VALUE | TYPE |
+|-|-|
+0x20000000 | MAP
+0x20010000 | CAR
+0x00030000 | FONT
+0x00050003 | MENU
+0x00050004 | TEXTS
+0x04090000 | IN_GAME
+0x00050001 | SPRITES
+0x000C0001 | CAR_DATA
+
+### Mesh table
 
 There are two lists of data.
 
@@ -38,7 +74,7 @@ struct PacketAndTextureEntry
 };
 ```
 
-#### Mesh data
+### Mesh data
 
 A mesh is composed of many vif packets. A vif packet can draw only few triangles.
 
@@ -72,7 +108,7 @@ The batch is made of multiple triangles strip. See [Triangle Strip on Wikipedia]
 
 A new triangle strip starts when the first bit of the vertex UVs is set to 1.
 
-#### Textures
+### Textures
 
 In files you can find something like this:
 
@@ -107,7 +143,7 @@ Once palette data is fixed, the palette can be used to create the final texture.
 
 ### Skybox texture table
 
-#### Texture table
+### Texture table
 
 At the texture table address you will have the table header, something like that:
 ```c++
@@ -129,37 +165,15 @@ struct TextureTableEntry
 	uint32_t height;               // Texture height in pixel with the mipmap included
 	uint32_t unknown0;             // Unknown, not an unique value, id in the next table?
 	uint32_t unknown1;             // Always 1
-	uint32_t texturePosition;      // Always add 0x80 (file header size) to get real position in the file // Absolute for Cars and Maps, relative for SPRITE.UBR
+	uint32_t texturePosition;      // Generally it's a relative position in the file
 	uint32_t unknown2;             // Always 0
 	uint32_t unknown3;             // Unknown, not const (seen values: 16, 32) 32 only seen in winbowl
 	uint32_t unknown4;             // ??? = 16 * clutCount, not true if unknown3 is not egals to 16
 	uint32_t unknown5;             // Always 0
 	uint32_t clutCount;            // Palettes count
-	uint32_t palettePosition;      // Always add 0x80 (file header size) to get real position in the file // Absolute for Cars and Maps, relative for SPRITE.UBR
-	uint32_t textureInfosPosition; // Always add 0x80 (file header size) to get real position in the file and + 0xF to get the file name // Absolute for Cars and Maps, relative for SPRITE.UBR
+	uint32_t palettePosition;      // Generally it's a relative position in the file
+	uint32_t textureInfosPosition; // Generally it's a relative position in the file + 0xF to get the file name
 	// There is the width, height (without the mipmap) and the texture name in the texture infos
 };
 ```
-
-### Maps header
-
-| FROM | TO | SIZE | TYPE | DESCRIPTION |
-|-|-|-|-|-|
-0x00 | 0x03 | 4 | UINT32_T | File type
-0x04 | 0x07 | 4 | UINT32_T | Ptr to sky data?
-0x08 | 0x09 | 4 | UINT32_T | Ptr to texture table headers
-0x0C | 0x0F | 4 | STRING | File name
-
-File type
-
-| VALUE | TYPE |
-|-|-|
-0x20000000 | MAP
-0x20010000 | CAR
-0x00030000 | FONT
-0x00050003 | MENU
-0x00050004 | TEXTS
-0x04090000 | IN_GAME
-0x00050001 | SPRITES
-0x000C0001 | CAR_DATA
 

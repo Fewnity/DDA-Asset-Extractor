@@ -8,7 +8,7 @@ class MDBookSidebarScrollbox extends HTMLElement {
         super();
     }
     connectedCallback() {
-        this.innerHTML = '<ol class="chapter"><li class="chapter-item expanded "><a href="presentation.html"><strong aria-hidden="true">1.</strong> Presentation</a></li><li class="chapter-item expanded "><a href="files_structure.html"><strong aria-hidden="true">2.</strong> Files Structure</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="maps.html"><strong aria-hidden="true">2.1.</strong> Maps</a></li></ol></li></ol>';
+        this.innerHTML = '<ol class="chapter"><li class="chapter-item expanded "><a href="presentation.html"><strong aria-hidden="true">1.</strong> Presentation</a></li><li class="chapter-item expanded "><a href="files_structure.html"><strong aria-hidden="true">2.</strong> Files Structure</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tracks.html"><strong aria-hidden="true">2.1.</strong> Tracks UBR files</a></li><li class="chapter-item expanded "><a href="cars.html"><strong aria-hidden="true">2.2.</strong> Cars UBR files</a></li><li class="chapter-item expanded "><a href="sprites.html"><strong aria-hidden="true">2.3.</strong> Sprites UBR file</a></li><li class="chapter-item expanded "><a href="in_game.html"><strong aria-hidden="true">2.4.</strong> InGame UBR file</a></li><li class="chapter-item expanded "><a href="flash.html"><strong aria-hidden="true">2.5.</strong> Flash UBR file (menus)</a></li></ol></li></ol>';
         // Set the current, active page, and reveal it if it's hidden
         let current_page = document.location.href.toString().split("#")[0].split("?")[0];
         if (current_page.endsWith("/")) {
