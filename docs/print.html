@@ -193,7 +193,7 @@ I'm not able to extract power ups meshes.</p>
 <p>In a map file, the data order will always be the same:<br></p>
 <div class="table-wrapper"><table><thead><tr><th>File header</th></tr></thead><tbody>
 <tr><td>Mesh table</td></tr>
-<tr><td>mesh data</td></tr>
+<tr><td>Mesh data</td></tr>
 <tr><td>Textures</td></tr>
 <tr><td>Texture table</td></tr>
 </tbody></table>
@@ -265,7 +265,7 @@ Every packets in the list are drawn with the same texture. The texture index ref
 <p>Green parts contains all the vertices UVs. 2 uint16_t per vertex.</p>
 </li>
 <li>
-<p>Red parts contains all the vertices colors.</p>
+<p>Red parts contains all the vertices colors. 3 uint8_t per vertex.</p>
 </li>
 <li>
 <p>The first uncolored parts contains the GIF tag. Other uncolored parts are unknown. 3 uint8_t per vertex.</p>
@@ -326,9 +326,38 @@ The <code>B8 11 00 00</code> value from [0x14, 0x17] is the texture table size i
 };
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="cars-ubr-files"><a class="header" href="#cars-ubr-files">Cars UBR files</a></h1>
+<p>This file contains cars textures and meshes.</p>
 <p>Example of extracted textures:</p>
 <p><img src="images/CAR_images.png" alt="image" /></p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="sprites-ubr-file"><a class="header" href="#sprites-ubr-file">Sprites UBR file</a></h1>
+<h2 id="data-1"><a class="header" href="#data-1">Data</a></h2>
+<p>In a map file, the data order will always be the same:<br></p>
+<div class="table-wrapper"><table><thead><tr><th>File header</th></tr></thead><tbody>
+<tr><td>Mesh table</td></tr>
+<tr><td>mesh data</td></tr>
+<tr><td>Textures</td></tr>
+<tr><td>Texture table</td></tr>
+</tbody></table>
+</div>
+<h3 id="file-header-1"><a class="header" href="#file-header-1">File header</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>FROM</th><th>TO</th><th>SIZE</th><th>TYPE</th><th>DESCRIPTION</th></tr></thead><tbody>
+<tr><td>0x00</td><td>0x03</td><td>4</td><td>UINT32_T</td><td>File type</td></tr>
+<tr><td>0x04</td><td>0x07</td><td>4</td><td>UINT32_T</td><td>Ptr to texture table headers without the file header padding</td></tr>
+<tr><td>0x08</td><td>0x09</td><td>4</td><td>UINT32_T</td><td>Ptr to texture table headers</td></tr>
+<tr><td>0x0C</td><td>0x0F</td><td>4</td><td>STRING</td><td>File name</td></tr>
+</tbody></table>
+</div>
+<p>File type</p>
+<div class="table-wrapper"><table><thead><tr><th>VALUE</th><th>TYPE</th></tr></thead><tbody>
+<tr><td>0x20000000</td><td>MAP</td></tr>
+<tr><td>0x20010000</td><td>CAR</td></tr>
+<tr><td>0x00030000</td><td>FONT</td></tr>
+<tr><td>0x00050003</td><td>MENU</td></tr>
+<tr><td>0x00050004</td><td>TEXTS</td></tr>
+<tr><td>0x04090000</td><td>IN_GAME</td></tr>
+<tr><td>0x00050001</td><td>SPRITES</td></tr>
+<tr><td>0x000C0001</td><td>CAR_DATA</td></tr>
+</tbody></table>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="sprites-ubr-file"><a class="header" href="#sprites-ubr-file">Sprites UBR file</a></h1>
 <p>This file contains only textures.</p>
 <p>It's containing player skins, particules and some UI.</p>
 <p>Example of extracted textures:</p>
@@ -341,8 +370,17 @@ The <code>B8 11 00 00</code> value from [0x14, 0x17] is the texture table size i
 <tr><td>0x0C</td><td>0x0F</td><td>4</td><td>NONE</td><td>Empty</td></tr>
 </tbody></table>
 </div>
-<h2 id="data-1"><a class="header" href="#data-1">Data</a></h2>
-<p>This file does not contain a texture table with every entries following each other. It's one one data block header, then one texture table entry, then one texture header, then the actual texture data and then it's starts again with a texture table entry.</p>
+<h2 id="data-2"><a class="header" href="#data-2">Data</a></h2>
+<p>This file does not contain a texture table with every entries following each other. It's one one data block header, then one texture table entry, then one texture header, then the actual texture data and then it's starts again with a data block header.</p>
+<div class="table-wrapper"><table><thead><tr><th>File header</th></tr></thead><tbody>
+<tr><td>Data block header</td></tr>
+<tr><td>Texture table entry</td></tr>
+<tr><td>Texture data</td></tr>
+<tr><td>Data block header</td></tr>
+<tr><td>Texture table entry</td></tr>
+<tr><td>...</td></tr>
+</tbody></table>
+</div>
 <p>Here is how a texture entry looks like in a file:<br>
 (Red part is unknown and black part is not part of the struct).</p>
 <p><img src="images/texture_table_entry_hex.png" alt="image" /></p>
@@ -380,6 +418,8 @@ The <code>B8 11 00 00</code> value from [0x14, 0x17] is the texture table size i
 <p>This file contains power ups textures and their meshes and some other textures.</p>
 <p>Example of extracted textures:</p>
 <p><img src="images/INGAME_images.png" alt="image" /></p>
+<h2 id="data-3"><a class="header" href="#data-3">Data</a></h2>
+<p>In this file, he data order will be this:<br></p>
 <div class="table-wrapper"><table><thead><tr><th>File header</th></tr></thead><tbody>
 <tr><td>Textures</td></tr>
 <tr><td>Mesh table and data multiple time</td></tr>
@@ -388,6 +428,19 @@ The <code>B8 11 00 00</code> value from [0x14, 0x17] is the texture table size i
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="flash-ubr-file-menus"><a class="header" href="#flash-ubr-file-menus">Flash UBR file (menus)</a></h1>
 <p>Example of extracted textures:</p>
 <p><img src="images/FLASH_images.png" alt="image" /></p>
+<h2 id="data-4"><a class="header" href="#data-4">Data</a></h2>
+<p>There is two texture lists, the first one is uncompressed textures and the second one uses a 256 colors palette.</p>
+<p>In this file, he data order will be this:<br></p>
+<div class="table-wrapper"><table><thead><tr><th>File header</th></tr></thead><tbody>
+<tr><td>Unkown data</td></tr>
+<tr><td>Textures headers</td></tr>
+<tr><td>Textures data</td></tr>
+<tr><td>Textures headers</td></tr>
+<tr><td>Textures data</td></tr>
+<tr><td>Palette</td></tr>
+</tbody></table>
+</div>
+<p>Currently the position of the texture header lists are hardcoded in the code, looks like it's a pain to find the address with code. (Address of the Europe version, SCES_507.81)</p>
 
                     </main>
 

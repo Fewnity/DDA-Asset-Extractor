@@ -169,6 +169,19 @@
                         <h1 id="flash-ubr-file-menus"><a class="header" href="#flash-ubr-file-menus">Flash UBR file (menus)</a></h1>
 <p>Example of extracted textures:</p>
 <p><img src="images/FLASH_images.png" alt="image" /></p>
+<h2 id="data"><a class="header" href="#data">Data</a></h2>
+<p>There is two texture lists, the first one is uncompressed textures and the second one uses a 256 colors palette.</p>
+<p>In this file, he data order will be this:<br></p>
+<div class="table-wrapper"><table><thead><tr><th>File header</th></tr></thead><tbody>
+<tr><td>Unkown data</td></tr>
+<tr><td>Textures headers</td></tr>
+<tr><td>Textures data</td></tr>
+<tr><td>Textures headers</td></tr>
+<tr><td>Textures data</td></tr>
+<tr><td>Palette</td></tr>
+</tbody></table>
+</div>
+<p>Currently the position of the texture header lists are hardcoded in the code, looks like it's a pain to find the address with code. (Address of the Europe version, SCES_507.81)</p>
 
                     </main>
 

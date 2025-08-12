@@ -6,6 +6,10 @@ Example of extracted textures:
 
 ![image](images/INGAME_images.png)
 
+## Data
+
+In this file, he data order will be this:<br>
+
 | File header |
 |-|
 Textures

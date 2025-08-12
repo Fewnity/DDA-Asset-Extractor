@@ -17,7 +17,7 @@ In a map file, the data order will always be the same:<br>
 | File header |
 |-|
 Mesh table
-mesh data
+Mesh data
 Textures
 Texture table
 
@@ -100,7 +100,7 @@ A vif packet looks like this:
 
 - Green parts contains all the vertices UVs. 2 uint16_t per vertex.
 
-- Red parts contains all the vertices colors.
+- Red parts contains all the vertices colors. 3 uint8_t per vertex.
 
 - The first uncolored parts contains the GIF tag. Other uncolored parts are unknown. 3 uint8_t per vertex.
 

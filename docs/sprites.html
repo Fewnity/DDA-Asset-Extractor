@@ -180,7 +180,16 @@
 </tbody></table>
 </div>
 <h2 id="data"><a class="header" href="#data">Data</a></h2>
-<p>This file does not contain a texture table with every entries following each other. It's one one data block header, then one texture table entry, then one texture header, then the actual texture data and then it's starts again with a texture table entry.</p>
+<p>This file does not contain a texture table with every entries following each other. It's one one data block header, then one texture table entry, then one texture header, then the actual texture data and then it's starts again with a data block header.</p>
+<div class="table-wrapper"><table><thead><tr><th>File header</th></tr></thead><tbody>
+<tr><td>Data block header</td></tr>
+<tr><td>Texture table entry</td></tr>
+<tr><td>Texture data</td></tr>
+<tr><td>Data block header</td></tr>
+<tr><td>Texture table entry</td></tr>
+<tr><td>...</td></tr>
+</tbody></table>
+</div>
 <p>Here is how a texture entry looks like in a file:<br>
 (Red part is unknown and black part is not part of the struct).</p>
 <p><img src="images/texture_table_entry_hex.png" alt="image" /></p>

@@ -19,7 +19,16 @@ Example of extracted textures:
 
 ## Data
 
-This file does not contain a texture table with every entries following each other. It's one one data block header, then one texture table entry, then one texture header, then the actual texture data and then it's starts again with a texture table entry.
+This file does not contain a texture table with every entries following each other. It's one one data block header, then one texture table entry, then one texture header, then the actual texture data and then it's starts again with a data block header.
+
+| File header |
+|-|
+Data block header
+Texture table entry
+Texture data
+Data block header
+Texture table entry
+...
 
 Here is how a texture entry looks like in a file:<br>
 (Red part is unknown and black part is not part of the struct).
