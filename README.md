@@ -10,6 +10,8 @@ And then open it with [ImHex](https://imhex.werwolv.net/).
 `DDA_Extractor.exe <input_path> <output_path>`<br>
 Example: `DDA_Extractor.exe "C:\path\to\dda_folder" "C:\path\to\output"`
 
+For each file you will get PNG textures and meshes in output.fbx
+
 ### Blender fix
 
 Meshes have their triangles in the wrong side.<br>
