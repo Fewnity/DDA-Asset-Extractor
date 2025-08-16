@@ -5,7 +5,7 @@ Destruction Derby Arenas PS2 Asset extractor / ripper.
 
 Link to the documentation: https://fewnity.github.io/DDA-Asset-Extractor/
 
-If you want to see some research made on files (GLADIATO.UBR, SPRITES.UBR, INGAME.UBR, DD4FRONT.UBR), put the imhex_dda_project.hexproj file in the root folder where the game assets files are.<br>
+If you want to see some research made on files (GLADIATO.UBR, SPRITES.UBR, INGAME.UBR, DD4FRONT.UBR), put the `imhex_dda_project.hexproj` file in the root folder where the game assets files are.<br>
 And then open it with [ImHex](https://imhex.werwolv.net/).
 
 Feel free to make a pull request!
@@ -17,9 +17,10 @@ Example: `DDA_Extractor.exe "C:\path\to\dda_folder" "C:\path\to\output"`
 For each file you will get PNG textures and meshes in output.fbx
 
 Currently:<br>
-Power ups and car wheels meshes are not extracted.<br>
-Extracted meshes are splitted into many triangles batches, it's how the PS2 works. I have to find a way to group them.<br>
-Skybox meshes are not extracted.
+- Power ups and car wheels meshes are not extracted.<br>
+- Extracted meshes are splitted into many triangles batches, it's how the PS2 works. I have to find a way to group them.<br>
+- Skybox meshes are not extracted.<br>
+- Dynamic objects/animated objects position will be wrong.
 
 This project works with the SCES_507.81 version (Europe), the tool will probably crash at the end with other version of the game. Only FLASH files (menus) should be missing.
 
