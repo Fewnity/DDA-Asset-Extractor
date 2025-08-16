@@ -16,8 +16,10 @@ Example: `DDA_Extractor.exe "C:\path\to\dda_folder" "C:\path\to\output"`
 
 For each file you will get PNG textures and meshes in output.fbx
 
-Currently the meshes of power ups and car wheels are not extracted.<br>
-Extracted meshes are splitted into many triangles batches, it's how the PS2 works. I have to find a way to group them.
+Currently:
+Power ups and car wheels meshes are not extracted.<br>
+Extracted meshes are splitted into many triangles batches, it's how the PS2 works. I have to find a way to group them.<br>
+Skybox meshes are not extracted.
 
 ### Blender fix
 
