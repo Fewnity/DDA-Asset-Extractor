@@ -16,10 +16,12 @@ Example: `DDA_Extractor.exe "C:\path\to\dda_folder" "C:\path\to\output"`
 
 For each file you will get PNG textures and meshes in output.fbx
 
-Currently:
+Currently:<br>
 Power ups and car wheels meshes are not extracted.<br>
 Extracted meshes are splitted into many triangles batches, it's how the PS2 works. I have to find a way to group them.<br>
 Skybox meshes are not extracted.
+
+This project works with the SCES_507.81 version (Europe), the tool will probably crash at the end with other version of the game. Only FLASH files (menus) should be missing.
 
 ### Blender fix
 
